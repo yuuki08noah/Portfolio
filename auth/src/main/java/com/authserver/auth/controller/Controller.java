@@ -38,8 +38,8 @@ public class Controller {
       return "ACCESS";
     } else if (result.getFirst().equals("refresh")) {
       Pair<String, String> token = result.getSecond();
-      Cookie newAccessToken = makeCookie("AccessToken", token.getFirst(), 3600);
-      Cookie newRefreshToken = makeCookie("RefreshToken", token.getSecond(), 259200);
+      Cookie newAccessToken = makeCookie("Authorization", token.getFirst(), Integer.parseInt(System.getenv("JWT_ACCESSTOKEN_EXPIRATION")));
+      Cookie newRefreshToken = makeCookie("RefreshToken", token.getSecond(), Integer.parseInt(System.getenv("JWT_REFRESHTOKEN_EXPIRATION")));
       response.addCookie(newAccessToken);
       response.addCookie(newRefreshToken);
       return "REFRESH";

@@ -4,12 +4,12 @@ spring:
   jpa:
     database: postgresql
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   datasource:
-    driver-class-name: ${POSTGRES_JDBC_DRIVER}
+    url: ${POSTGRES_USER_URL}
     username: ${POSTGRES_USER_USERNAME}
     password: ${POSTGRES_USER_PASSWORD}
-    url: ${POSTGRES_USER_URL}
+    driver-class-name: ${POSTGRES_JDBC_DRIVER}
   data:
     redis:
       host: ${REDIS_USER_HOST}

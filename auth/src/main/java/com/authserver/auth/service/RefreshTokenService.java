@@ -23,17 +23,25 @@ public class RefreshTokenService {
     return Pair.of(accessToken, refreshToken);
   }
 
-  public Boolean deleteToken(String accessToken) {
-    return redisTemplate.delete(jwtAccessTokenProvider.getUserId(accessToken).toString());
+  public Boolean deleteToken(String refreshToken) {
+    return redisTemplate.delete(jwtRefreshTokenProvider.getUserId(refreshToken).toString());
   }
 
   public Pair<String, Pair<String, String>> validateToken(String accessToken, String refreshToken) {
     if (jwtAccessTokenProvider.validateToken(accessToken)) {
       return Pair.of("access", Pair.of("", ""));
     } else {
-      if (jwtRefreshTokenProvider.validateToken(refreshToken)) {
-        Pair<String, String> token = createToken(jwtRefreshTokenProvider.getUserId(refreshToken));
-        return Pair.of("refresh", token);
+      if(jwtRefreshTokenProvider.validateToken(refreshToken)) {
+        Long userId = jwtRefreshTokenProvider.getUserId(refreshToken);
+        String redis = redisTemplate.opsForValue().get(userId.toString());
+        if(redis != null && redis.equals(refreshToken)) {
+          deleteToken(refreshToken);
+          Pair<String, String> token = createToken(userId);
+          return Pair.of("refresh", token);
+        }
+        else {
+          return Pair.of("invalid", Pair.of("", ""));
+        }
       } else {
         return Pair.of("invalid", Pair.of("", ""));
       }
