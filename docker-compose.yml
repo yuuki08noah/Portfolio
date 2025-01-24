@@ -1,0 +1,36 @@
+services:
+  postgres-user:
+    image: postgres
+    ports:
+      - "100:5432"
+    networks:
+      - auth-network
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_USER_PASSWORD}
+    
+  auth:
+    image: portfolio/auth
+    depends_on:
+      - postgres-user
+      - redis-user
+    ports:
+      - "1001:1001"
+    networks:
+      - auth-network
+    env_file:
+      - .env
+
+  redis-user:
+    image: redis
+    ports:
+      - "101:6379"
+    networks:
+      - auth-network
+    env_file:
+      - .env
+
+networks:
+  auth-network:
+    driver: bridge
+
+  

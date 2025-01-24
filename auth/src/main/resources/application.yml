@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: auth-server
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create
+  datasource:
+    driver-class-name: ${POSTGRES_JDBC_DRIVER}
+    username: ${POSTGRES_USER_USERNAME}
+    password: ${POSTGRES_USER_PASSWORD}
+    url: ${POSTGRES_USER_URL}
+  data:
+    redis:
+      host: ${REDIS_USER_HOST}
+      port: ${REDIS_USER_PORT}
+      password: ${REDIS_USER_PASSWORD}
+
+server:
+  port: ${AUTH}
