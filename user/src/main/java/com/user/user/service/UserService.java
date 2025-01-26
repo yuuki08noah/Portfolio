@@ -28,6 +28,7 @@ public class UserService {
   }
 
   // CUD
+  @Transactional
   public void createUser(UserDTO userDTO) throws UserAlreadyExistsException {
     if (userRepository.getUserByEmail(userDTO.email()) != null || userRepository.getUserById(userDTO.id()) != null) {
       throw new UserAlreadyExistsException("User already exists");

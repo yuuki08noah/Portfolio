@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("/users")
 @RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
@@ -23,7 +23,7 @@ public class UserController {
     return ResponseEntity.ok("User successfully signed up");
   }
 
-  @GetMapping("/users")
+  @GetMapping("/")
   public ResponseEntity<UserPublicDTO> getUser(@RequestParam(required = false) String email, @RequestParam(required = false) String id) throws UserNotFoundException {
     if (id != null) {
       return ResponseEntity.ok(userService.getUserPublicById(id));
